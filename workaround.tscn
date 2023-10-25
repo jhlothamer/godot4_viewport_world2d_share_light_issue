@@ -1,0 +1,122 @@
+[gd_scene load_steps=11 format=3 uid="uid://u4dg8j6k3uim"]
+
+[ext_resource type="Script" path="res://workaround.gd" id="1_6w5r7"]
+[ext_resource type="Texture2D" uid="uid://7lq8uvt2c7cq" path="res://icon.svg" id="2_gf5yk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_36dea"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_op5o3"]
+seamless = true
+noise = SubResource("FastNoiseLite_36dea")
+
+[sub_resource type="Gradient" id="Gradient_3v2w5"]
+offsets = PackedFloat32Array(0.749546, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7dwst"]
+gradient = SubResource("Gradient_3v2w5")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ijh4y"]
+polygon = PackedVector2Array(-24, -24, -24, 24, 24, 24, 24, -24)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2jlb1"]
+viewport_path = NodePath("SubViewport1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_uqcu8"]
+viewport_path = NodePath("SubViewport1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_guugs"]
+viewport_path = NodePath("SubViewport2")
+
+[node name="Workaround" type="Node2D"]
+script = ExtResource("1_6w5r7")
+
+[node name="SubViewport1" type="SubViewport" parent="."]
+size = Vector2i(1152, 648)
+
+[node name="TextureRect1" type="TextureRect" parent="SubViewport1"]
+modulate = Color(0, 0.498039, 0, 1)
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("NoiseTexture2D_op5o3")
+stretch_mode = 1
+
+[node name="PointLight2D1" type="PointLight2D" parent="SubViewport1"]
+position = Vector2(296, 320)
+energy = 2.0
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_7dwst")
+texture_scale = 10.0
+
+[node name="LightOccluder2D1" type="LightOccluder2D" parent="SubViewport1"]
+position = Vector2(476, 408)
+occluder = SubResource("OccluderPolygon2D_ijh4y")
+
+[node name="SubViewport2" type="SubViewport" parent="."]
+size = Vector2i(1152, 648)
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport2"]
+modulate = Color(0.498039, 0, 0, 1)
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("NoiseTexture2D_op5o3")
+stretch_mode = 1
+
+[node name="PointLight2D2" type="PointLight2D" parent="SubViewport2"]
+position = Vector2(848, 328)
+energy = 2.0
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_7dwst")
+texture_scale = 10.0
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="SubViewport2"]
+position = Vector2(676, 416)
+occluder = SubResource("OccluderPolygon2D_ijh4y")
+
+[node name="Icon" type="Sprite2D" parent="SubViewport2"]
+position = Vector2(608, 96)
+texture = ExtResource("2_gf5yk")
+
+[node name="SubViewport1Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("ViewportTexture_2jlb1")
+centered = false
+
+[node name="SubViewport1PreviewLabel" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 196.0
+offset_bottom = 31.0
+text = "Subviewport1 Preview (Editor)"
+
+[node name="SubViewport1PreviewSprite2D" type="Sprite2D" parent="."]
+position = Vector2(24, 31)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_uqcu8")
+centered = false
+
+[node name="SubViewport2PreviewLabel" type="Label" parent="."]
+offset_left = 848.0
+offset_top = 16.0
+offset_right = 1020.0
+offset_bottom = 39.0
+text = "Subviewport2 Preview (Editor)
+"
+
+[node name="SubViewport2PreviewSprite2D" type="Sprite2D" parent="."]
+position = Vector2(848, 40)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_guugs")
+centered = false
+
+[node name="WorkaroundLabel" type="Label" parent="."]
+offset_left = 432.0
+offset_top = 496.0
+offset_right = 736.0
+offset_bottom = 623.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "Removing and adding the second light back to the scene tree causes the light to be re-associated with the canvas for the first subview's world2d."
+autowrap_mode = 2

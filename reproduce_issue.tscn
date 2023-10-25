@@ -1,0 +1,122 @@
+[gd_scene load_steps=11 format=3 uid="uid://c42nf3aa0mg3g"]
+
+[ext_resource type="Script" path="res://reproduce_issue.gd" id="1_wq4q8"]
+[ext_resource type="Texture2D" uid="uid://7lq8uvt2c7cq" path="res://icon.svg" id="2_7vqsd"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_36dea"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_op5o3"]
+seamless = true
+noise = SubResource("FastNoiseLite_36dea")
+
+[sub_resource type="Gradient" id="Gradient_3v2w5"]
+offsets = PackedFloat32Array(0.749546, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7dwst"]
+gradient = SubResource("Gradient_3v2w5")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ijh4y"]
+polygon = PackedVector2Array(-24, -24, -24, 24, 24, 24, 24, -24)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_2jlb1"]
+viewport_path = NodePath("SubViewport1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_v2ahy"]
+viewport_path = NodePath("SubViewport1")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_p4f6u"]
+viewport_path = NodePath("SubViewport2")
+
+[node name="ReproduceIssue" type="Node2D"]
+script = ExtResource("1_wq4q8")
+
+[node name="SubViewport1" type="SubViewport" parent="."]
+size = Vector2i(1152, 648)
+
+[node name="TextureRect1" type="TextureRect" parent="SubViewport1"]
+modulate = Color(0, 0.498039, 0, 1)
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("NoiseTexture2D_op5o3")
+stretch_mode = 1
+
+[node name="PointLight2D1" type="PointLight2D" parent="SubViewport1"]
+position = Vector2(296, 320)
+energy = 2.0
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_7dwst")
+texture_scale = 20.0
+
+[node name="LightOccluder2D1" type="LightOccluder2D" parent="SubViewport1"]
+position = Vector2(476, 408)
+occluder = SubResource("OccluderPolygon2D_ijh4y")
+
+[node name="SubViewport2" type="SubViewport" parent="."]
+size = Vector2i(1152, 648)
+
+[node name="TextureRect2" type="TextureRect" parent="SubViewport2"]
+modulate = Color(0.498039, 0, 0, 1)
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = SubResource("NoiseTexture2D_op5o3")
+stretch_mode = 1
+
+[node name="PointLight2D2" type="PointLight2D" parent="SubViewport2"]
+position = Vector2(848, 328)
+energy = 2.0
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_7dwst")
+texture_scale = 10.0
+
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="SubViewport2"]
+position = Vector2(676, 408)
+occluder = SubResource("OccluderPolygon2D_ijh4y")
+
+[node name="Icon" type="Sprite2D" parent="SubViewport2"]
+position = Vector2(608, 96)
+texture = ExtResource("2_7vqsd")
+
+[node name="SubViewport1Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("ViewportTexture_2jlb1")
+centered = false
+
+[node name="SubViewport1PreviewLabel" type="Label" parent="."]
+offset_left = 24.0
+offset_top = 8.0
+offset_right = 196.0
+offset_bottom = 31.0
+text = "Subviewport1 Preview (Editor)"
+
+[node name="SubViewport1PreviewSprite2D" type="Sprite2D" parent="."]
+position = Vector2(24, 31)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_v2ahy")
+centered = false
+
+[node name="SubViewport2PreviewLabel" type="Label" parent="."]
+offset_left = 848.0
+offset_top = 16.0
+offset_right = 1020.0
+offset_bottom = 39.0
+text = "Subviewport2 Preview (Editor)
+"
+
+[node name="SubViewport2PreviewSprite2D" type="Sprite2D" parent="."]
+position = Vector2(848, 40)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("ViewportTexture_p4f6u")
+centered = false
+
+[node name="IssuesLabel" type="Label" parent="."]
+offset_left = 792.0
+offset_top = 256.0
+offset_right = 1088.0
+offset_bottom = 488.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+text = "The issues is that the second point light (on right side) is missing when running the scene.  It does not get re-associated with the canvas of the world2d of the first viewport.  However, the occluder and textures are re-associated, which is the correct behavior.  See workaround scene for a workaround."
+autowrap_mode = 2
