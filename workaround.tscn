@@ -38,7 +38,7 @@ script = ExtResource("1_6w5r7")
 size = Vector2i(1152, 648)
 
 [node name="TextureRect1" type="TextureRect" parent="SubViewport1"]
-modulate = Color(0, 0.498039, 0, 1)
+modulate = Color(0.392157, 0.392157, 0.392157, 1)
 offset_right = 1152.0
 offset_bottom = 648.0
 texture = SubResource("NoiseTexture2D_op5o3")
@@ -46,10 +46,11 @@ stretch_mode = 1
 
 [node name="PointLight2D1" type="PointLight2D" parent="SubViewport1"]
 position = Vector2(296, 320)
+color = Color(0, 1, 0, 1)
 energy = 2.0
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_7dwst")
-texture_scale = 10.0
+texture_scale = 20.0
 
 [node name="LightOccluder2D1" type="LightOccluder2D" parent="SubViewport1"]
 position = Vector2(476, 408)
@@ -59,7 +60,7 @@ occluder = SubResource("OccluderPolygon2D_ijh4y")
 size = Vector2i(1152, 648)
 
 [node name="TextureRect2" type="TextureRect" parent="SubViewport2"]
-modulate = Color(0.498039, 0, 0, 1)
+modulate = Color(0.490196, 0.490196, 0.490196, 1)
 offset_right = 1152.0
 offset_bottom = 648.0
 texture = SubResource("NoiseTexture2D_op5o3")
@@ -67,6 +68,7 @@ stretch_mode = 1
 
 [node name="PointLight2D2" type="PointLight2D" parent="SubViewport2"]
 position = Vector2(848, 328)
+color = Color(1, 0, 0, 1)
 energy = 2.0
 shadow_enabled = true
 texture = SubResource("GradientTexture2D_7dwst")
@@ -112,10 +114,10 @@ texture = SubResource("ViewportTexture_guugs")
 centered = false
 
 [node name="WorkaroundLabel" type="Label" parent="."]
-offset_left = 432.0
-offset_top = 496.0
-offset_right = 736.0
-offset_bottom = 623.0
+offset_left = 800.0
+offset_top = 488.0
+offset_right = 1104.0
+offset_bottom = 615.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 text = "Removing and adding the second light back to the scene tree causes the light to be re-associated with the canvas for the first subview's world2d."
